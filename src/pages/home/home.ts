@@ -22,6 +22,15 @@ export class HomePage {
   ionViewWillEnter() {
     this.menu.swipeEnable(false);
   }
+
+  ionViewDidEnter(){
+    this.auth.refreshToken().subscribe(response=>{
+      this.auth.successfulLogin(response.headers.get('Authorization'));
+      this.navCtrl.setRoot('CategoriasPage');
+    },
+      erro => {}
+    )
+  }
   
   ionViewDidLeave() {
     this.menu.swipeEnable(true);
