@@ -1,6 +1,11 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { EnderecoDto } from '../../models/endereco.dto';
+import { StorageService } from '../../services/storage.service';
+import { ClienteService } from '../../services/domain/cliente.service';
+import { PedidoDTO } from '../../models/pedido.dto';
+import { NullTemplateVisitor } from '@angular/compiler';
+import { CartService } from '../../services/domain/cart.service';
 
 @IonicPage()
 @Component({
@@ -11,44 +16,47 @@ export class PickAddressPage {
 
   items: EnderecoDto[];
 
-  constructor(public navCtrl: NavController, public navParams: NavParams) {
+  pedido: PedidoDTO;
+
+  constructor(
+    public navCtrl: NavController,
+    public navParams: NavParams,
+    public storage: StorageService,
+    public clienteService: ClienteService,
+    public cartService: CartService
+    ) {
   }
 
   ionViewDidLoad() {
-    this.items = [
-      {
-        id: "1",
-        logradouro: "Rua quinze de Novembro",
-        numero: "300",
-        complemento: "Apto 200",
-        bairro: "Santa Monica",
-        cep: "067320000",
-        cidade:{
-          id: "1",
-          nome: "Uberlandia",
-          estado:{
-            id: "1",
-            nome: "Minas Gerais"
-          }
+    let localUser = this.storage.getLocalUser();
+    if(localUser && localUser.email){
+      this.clienteService.findByEmail(localUser.email)
+      .subscribe(response =>{
+        this.items = response['enderecos'];
+
+        let cart = this.cartService.getCart();
+
+        this.pedido = {
+          cliente: {id: response['id']},
+          enderecoDeEntrega: null,
+          pagamento: null,
+          itens: cart.items.map(x => { return {quantidade: x.quantidade, produto: {id: x.produto.id}} })
         }
       },
-      {
-        id: "1",
-        logradouro: "Rua quinze de Novembro",
-        numero: "300",
-        complemento: "Apto 200",
-        bairro: "Santa Monica",
-        cep: "067320000",
-        cidade:{
-          id: "1",
-          nome: "Uberlandia",
-          estado:{
-            id: "1",
-            nome: "Minas Gerais"
+        error => {
+          if(error.status == 403){
+            this.navCtrl.setRoot('HomePage');
           }
         }
-      }
-    ]
+      );
+    }else{
+      this.navCtrl.setRoot('HomePage');
+    }
+  }
+
+  nextPage(item: EnderecoDto){
+    this.pedido.enderecoDeEntrega = {id: item.id};
+    this.navCtrl.push('PaymentPage', {pedido: this.pedido})
   }
 
 }
