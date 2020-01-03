@@ -1,7 +1,6 @@
 <ion-content padding>
-  <h3>MoonRain Store</h3>
 
-  <img src="assets/imgs/tela-inicial.png" alt="logo">
+  <img src="assets/imgs/MoonRain.png" alt="logo">
 
   <form action="">
     <ion-item>
@@ -12,7 +11,7 @@
       <ion-label stacked>Senha</ion-label>
       <ion-input [(ngModel)]="creds.senha" name="senha" type="password"></ion-input>
     </ion-item>
-    <button ion-button block (click)="login()">Entrar</button>
+    <button class="btn_home background-btn" ion-button block (click)="login()" round>Entrar</button>
   </form>
-  <button ion-button block outline (click)="signup()">Registrar</button>
+  <button class="btn_home color" ion-button block outline (click)="signup()" round>Cadastre-se</button>
 </ion-content>

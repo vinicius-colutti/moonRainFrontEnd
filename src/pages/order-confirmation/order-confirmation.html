@@ -70,8 +70,8 @@
       </ion-item>
     </ion-card>
 
-    <button ion-button block (click)="checkout()">Confirmar pedido</button>
-    <button ion-button block outline (click)="back()">Voltar</button>
+    <button class="btn_confirmar" ion-button block (click)="checkout()" round>Confirmar pedido</button>
+    <button class="btn_voltar" ion-button block outline (click)="back()" round>Voltar</button>
   </div>
 
   <div *ngIf="codpedido">

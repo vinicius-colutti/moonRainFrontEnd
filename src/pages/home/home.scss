@@ -9,7 +9,19 @@ page-home {
         align-self: center;
         margin: auto;
         display: block;
-        padding: 10px;
+        padding: 0px;
+    }
+
+    .btn_home{
+        margin-top: 20px;  
+        border-color: #836db5;
+    }
+    .background-btn{
+        background-color: #836db5;
+    }
+
+    .color span{
+        color: #836db5;
     }
 
 }

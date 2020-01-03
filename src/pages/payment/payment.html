@@ -27,7 +27,7 @@
         <ion-option *ngFor="let n of parcelas; first as f" [value]="n" [selected]="f">{{n}}</ion-option>
       </ion-select>
     </ion-item>
-    <button ion-button block type="submit" [disabled]="formGroup.invalid">Próximo</button>
+    <button class="btn_payment" ion-button block type="submit" [disabled]="formGroup.invalid" round>Próximo</button>
   </form>
 
 </ion-content>
